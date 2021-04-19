@@ -2,9 +2,11 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Schema;
+use Symfony\Component\Console\Output\ConsoleOutput;
 
-class CreateUsersTable extends Migration
+class CreateJobTasksTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +15,15 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('job_tasks', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
-            $table->string('password');
-            $table->rememberToken();
-            $table->timestamps();
+            $table->integer('level');
+            $table->integer('time');
         });
+
+        $output = new ConsoleOutput();
+        Artisan::call('taskprovider:fetch', [], $output);
     }
 
     /**
@@ -31,6 +33,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('job_tasks');
     }
 }
